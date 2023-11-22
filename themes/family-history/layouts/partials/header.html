@@ -1,0 +1,28 @@
+<header class="s-header">
+
+  <div class="header__top">
+    <div class="header__logo">
+      <a class="site-logo" href="/">
+        <img src="/images/logo.svg" alt="Homepage" />
+      </a>
+    </div>
+  </div>
+
+  <nav class="header__nav-wrap">
+
+    <ul class="header__nav">
+      {{ $currentPage := . }}
+      {{ range site.Menus.main.ByName }}
+        <li class="{{ if $currentPage.IsMenuCurrent .Menu . }}current{{ end }}">
+          <a href="{{ .URL }}">{{ .Name }}</a>
+        </li>
+      {{ end }}
+    </ul>
+
+  </nav>
+
+  <a href="#0" class="header__menu-toggle">
+    <span>Menu</span>
+  </a>
+
+</header>

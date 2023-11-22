@@ -1,0 +1,74 @@
+{{ define "main" }}
+<main class="s-content">
+  <div class="content">
+    <main class="row content__page">
+      <article class="column large-full entry format-standard">
+        {{ if .Params.image }}
+        <div class="media-wrap entry__media">
+          <div class="entry__post-thumb">
+            <img src="{{ .Params.image }}" alt="{{ .Params.Title }}" />
+          </div>
+        </div>
+        {{ end }}
+
+        <header class="content__page-header entry__header">
+          {{ if .Params.Title }}
+          <h1 class="display-1 entry__title">{{ .Params.Title }}</h1>
+          {{ end }}
+
+          <ul class="entry__header-meta">
+            <li class="author {{ .Params.gender | lower }}">{{ .Params.gender }}</li>
+            <li class="date">{{ time.Format "January 2, 2006" .Params.birthdate }} - {{ if .Params.deathdate  }}{{ time.Format "January 2, 2006" .Params.deathdate }}{{ else }}PRESENT{{ end }}</li>
+          </ul>
+        </header>
+
+        {{ if .Content }}
+        <main class="entry__content">
+          {{ .Content }}
+        </main>
+        {{ end }}
+
+        <p class="entry__tags">
+          <span>Relations</span>
+          <span class="entry__tag-list">
+            {{ if .Params.wife }}
+            <a href="/{{ .Params.wife }}">{{ replace .Params.wife "-" " " }} (Wife)</a>
+            {{ end }}
+            {{ if .Params.husband }}
+            <a href="/{{ .Params.husband }}">{{ replace .Params.husband "-" " " }} (Husband)</a>
+            {{ end }}
+            {{ if .Params.mother }}
+            <a href="/{{ .Params.mother }}">{{ replace .Params.mother "-" " " }} (Mother)</a>
+            {{ end }}
+            {{ if .Params.father }}
+            <a href="/{{ .Params.father }}">{{ replace .Params.father "-" " " }} (Father)</a>
+            {{ end }}
+            {{ range .Params.siblings }}
+            <a href="/{{ . }}">{{ replace . "-" " " }} (Sibling)</a>
+            {{ end }}
+            {{ range .Params.children }}
+            <a href="/{{ . }}">{{ replace . "-" " " }} (Child)</a>
+            {{ end }}
+          </span>
+        </p>
+        
+        {{ if .Params.files }}
+        <p class="entry__tags">
+          <span>Files</span>
+          <span class="entry__tag-list">
+            {{ range .Params.files }}
+            {{ $file := replace . "/images/" "" }}
+            {{ $file := split $file "." }}
+            {{ $file := first 1 $file }}
+            {{ $file := delimit $file "" }}
+            {{ $file := replace $file "-" " " }}
+            <a href="{{ . }}">{{ $file }}</a>
+            {{ end }}
+          </span>
+        </p>
+        {{ end }}
+      </article>
+    </main>
+  </div>
+</main>
+{{ end }}

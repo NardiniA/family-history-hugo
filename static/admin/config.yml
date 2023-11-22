@@ -1,0 +1,126 @@
+local_backend: true
+
+backend:
+  name: git-gateway
+media_folder: static/images
+public_folder: /images
+publish_mode: editorial_workflow
+collections:
+  - name: 'people'
+    label: People
+    folder: 'content'
+    filter: {field: 'isHome', value: false}
+    create: true
+    slug: '{{slug}}'
+    summary: "{{title}} - {{birthdate | date('YYYY-MM-DD')}}"
+    editor:
+      preview: true
+    fields:
+      - name: 'isHome'
+        widget: 'hidden'
+        default: false
+      - name: 'title'
+        label: 'Name'
+        widget: 'string'
+        required: true
+      - name: 'gender'
+        label: 'Gender'
+        widget: 'select'
+        options: ['Male', 'Female']
+        multiple: false
+        default: 'Male'
+        required: true
+      - name: 'image'
+        label: 'Image'
+        widget: 'image'
+        allow_multiple: false
+        required: false
+      - name: 'birthdate'
+        label: 'Date of Birth'
+        widget: 'datetime'
+        default: ''
+        date_format: 'DD-MM-YYYY'
+        time_format: false
+        picker_utc: false
+        required: true
+      - name: 'deathdate'
+        label: 'Date of Death'
+        widget: 'datetime'
+        default: ''
+        date_format: 'DD-MM-YYYY'
+        time_format: false
+        picker_utc: false
+        required: false
+      - name: 'mother'
+        label: 'Mother'
+        widget: 'relation'
+        collection: 'people'
+        search_fields: ['title']
+        value_field: '{{slug}}'
+        display_fields: ['title']
+        multiple: false
+        required: false
+      - name: 'father'
+        label: 'Father'
+        widget: 'relation'
+        collection: 'people'
+        search_fields: ['title']
+        value_field: '{{slug}}'
+        display_fields: ['title']
+        multiple: false
+        required: false
+      - name: 'wife'
+        label: 'Wife'
+        widget: 'relation'
+        collection: 'people'
+        search_fields: ['title']
+        value_field: '{{slug}}'
+        display_fields: ['title']
+        multiple: false
+        required: false
+      - name: 'husband'
+        label: 'Husband'
+        widget: 'relation'
+        collection: 'people'
+        search_fields: ['title']
+        value_field: '{{slug}}'
+        display_fields: ['title']
+        multiple: false
+        required: false
+      - name: 'siblings'
+        label: 'Siblings'
+        widget: 'relation'
+        collection: 'people'
+        search_fields: ['title']
+        value_field: '{{slug}}'
+        display_fields: ['title']
+        multiple: true
+        required: false
+      - name: 'children'
+        label: 'Children'
+        widget: 'relation'
+        collection: 'people'
+        search_fields: ['title']
+        value_field: '{{slug}}'
+        display_fields: ['title']
+        multiple: true
+        required: false
+      - name: 'menu'
+        widget: 'hidden'
+        default: 'main'
+      - name: 'files'
+        label: 'Files'
+        widget: 'file'
+        media_library:
+          config:
+            multiple: true
+        allow_multiple: true
+        required: false
+      - name: 'body'
+        label: 'Details'
+        widget: 'markdown'
+        buttons: ['bold', 'italic', 'link', 'heading-one', 'heading-two', 'heading-three', 'heading-four', 'heading-five', 'heading-six', 'quote', 'bulleted-list', 'numbered-list']
+        editor_components: ['image']
+        modes: ['rich_text']
+        required: false
+

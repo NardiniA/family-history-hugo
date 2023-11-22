@@ -1,0 +1,102 @@
+<script src="/js/go.js"></script>
+<script src="/js/tree.js"></script>
+
+<style>
+  .tree-container {
+    padding-left : 330px;
+    padding-right: 20px;
+    width        : 100%;
+    max-width    : 2140px;
+    padding-top : 6.4rem;
+    height: calc(100vh - 95px);
+    margin-bottom: 80px;
+  }
+  
+  @media screen and (max-width: 1600px) {
+
+    .tree-container {
+        padding-left : 320px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+
+    .tree-container {
+        padding-left : 290px;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+
+    .tree-container {
+        padding-left: 20px;
+        width        : 100%;
+        padding-top : 14.2rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .tree-container {
+        padding-top : 12.6rem;
+    }
+}
+
+  #myDiagramDiv {
+    background-color: rgb(248, 248, 248);
+    border: 1px solid black;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    cursor: auto;
+  }
+
+  .s-content {
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+  }
+
+  .button-row {
+    text-align: center;
+  }
+
+  .button-row button {
+    margin: 8px;
+  }
+
+  .tree-container p {
+    margin-bottom: 20px;
+  }
+
+  .titlebar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .titlebar .btn {
+    height: 4rem;
+    line-height: 3.6rem;
+  }
+</style>
+
+{{ $pages := .Site.RegularPages }}
+{{ $json := slice }}
+{{ range $pages }}
+{{ $page := .}}
+{{ $key := $page.Title | urlize }}
+{{ $sex := substr $page.Params.gender 0 1 }}
+{{ $dict := dict "key" $key "n" $page.Title "s" $sex "m" (default $page.Params.mother "") "f" (default
+$page.Params.father "") "ux" (default $page.Params.wife "") "vir" (default $page.Params.husband "") }}
+{{ $json = $json | append $dict }}
+{{ end }}
+
+<div class="tree-container">
+  <p>Click on a person to find out more information about them.</p>
+
+  <div id="myDiagramDiv" data-pages='{{ $json | jsonify }}'>
+    <canvas tabindex="0" style="z-index: 2; user-select: none; touch-action: none; cursor: auto;"></canvas>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    {{- partial "head.html" . -}}
+    <body>
+
+        {{- partial "preloader.html" . -}}
+
+        <div id="top" class="s-wrap site-wrapper">
+            
+            {{- partial "header.html" . -}}
+
+            {{- block "main" . }}{{- end }}
+
+            {{- partial "footer.html" . -}}
+
+        </div>
+
+        {{- partial "script.html" . -}}
+    </body>
+</html>

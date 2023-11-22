@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Manager</title>
+  <!-- Include the script that enables Netlify Identity on this page. -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+
+<body>
+  <!-- Include the script that builds the page and powers Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    var PeoplePreview = createClass({
+      render: function() {
+        var entry = this.props.entry;
+        var image = entry.getIn(['data', 'image']);
+        var title = entry.getIn(['data', 'title']);
+        var body = this.props.widgetFor('body');
+
+        var gender = entry.getIn(['data', 'gender']);
+        var dob = entry.getIn(['data', 'birthdate']);
+        var dod = entry.getIn(['data', 'deathdate']);
+
+        var wife = entry.getIn(['data', 'wife']);
+        var husband = entry.getIn(['data', 'husband']);
+        var father = entry.getIn(['data', 'father']);
+        var mother = entry.getIn(['data', 'mother']);
+
+        var siblings = this.props.widgetsFor('siblings');
+        var children = this.props.widgetsFor('children');
+        var files = this.props.widgetsFor('files');
+
+        function addImage() {
+          if (image) {
+            return h('div', { className: "media-wrap entry__media" }, 
+              h('div', { className: "entry__post-thumb" }, 
+                h('img', { src: image, alt: title }),
+              ),
+            );
+          }
+
+          return null;
+        }
+
+        function addGender() {
+          if (gender) {
+            return h('li', { className: `author ${gender.toLowerCase()}` }, gender);
+          }
+
+          return null;
+        }
+
+        function formatDate(a) {
+          return new Date(a).toLocaleDateString('en-gb', { month: "long", day: "numeric", year: "numeric" });
+        }
+
+        function addDate() {
+          if (dob) {
+            return h('li', { className: "date" }, `${formatDate(dob)} - ${dod ? formatDate(dod) : "PRESENT"}`);
+          }
+
+          return null;
+        }
+
+        function addMeta() {
+          if (gender || dob || dod) {
+            return h('ul', { className: "entry__header-meta" }, 
+              addGender(),
+              addDate(),
+            );
+          }
+
+          return null;
+        }
+
+        function addHeader() {
+          if (title) {
+            return h('header', { className: "content__page-header entry__header" }, 
+              h('h1', { className: "display-1 entry__title" }, title),
+
+              addMeta(),
+            );
+          }
+
+          return null;
+        }
+
+        function addContent() {
+          if (body) {
+            return h('div', { className: "entry__content" }, body);
+          }
+
+          return null;
+        }
+
+        function addRelation(variable) {
+          if (variable) {
+            return h('a', { href: `/admin/#/collections/people/entries/${variable}` }, variable.replace(/-/g, " "));
+          }
+
+          return null;
+        }
+
+        function addRelationGroup(variable) {
+          if (!!variable?._capacity) {
+            return variable.map(function(v, i) {
+              return addRelation(v.getIn(['data']));
+            });
+          }
+
+          return null;
+        }
+
+        function addRelations() {
+          if (wife || husband || mother || father || siblings?._capacity || children?._capacity) {
+            return h('p', { className: "entry__tags" }, 
+              h('span', {}, "Relations"),
+              h('span', { className: "entry__tag-list" }, 
+                addRelation(wife),
+                addRelation(husband),
+                addRelation(mother),
+                addRelation(father),
+                addRelationGroup(siblings),
+                addRelationGroup(children),
+              ),
+            );
+          }
+
+          return null;
+        }
+
+        function addFiles() {
+          console.log(files);
+          if (!!files?._capacity) {
+            return h('p', { className: "entry__tags" },
+              h('span', {}, "Files"),
+              h('span', { className: "entry__tag-list" },
+                files.map(function(f, index) {
+                  const file = f.getIn(['data'])
+                  return h('a', { href: file }, file.replace("/images/", "").split(".")[0].replace(/-/g, " "))
+                }),
+              ),
+            );
+          }
+
+          return null;
+        }
+
+        return h('div', { className: "content" }, 
+          h('main', { className: "row content__page" }, 
+            addImage(),
+            addHeader(),
+            addContent(),
+            addRelations(),
+            addFiles(),
+          ),
+        );
+      },
+    });
+
+    CMS.registerPreviewStyle("/css/main.css");
+    CMS.registerPreviewStyle("/css/base.css");
+    CMS.registerPreviewStyle("/css/preview.css");
+    CMS.registerPreviewTemplate("people", PeoplePreview);
+  </script>
+</body>
+
+</html>

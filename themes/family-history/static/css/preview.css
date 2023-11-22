@@ -1,0 +1,9 @@
+.content__page {
+  flex-direction: column;
+  padding: 3rem 2rem;
+}
+
+.entry__tags .entry__tag-list a {
+  font-size: 16px !important;
+  line-height: 25px !important;
+}
