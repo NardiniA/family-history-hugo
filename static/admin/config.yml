@@ -5,7 +5,8 @@ public_folder: /images
 publish_mode: editorial_workflow
 collections:
   - name: 'people'
-    label: People
+    label: 'People'
+    label_singular: 'Person'
     folder: 'content'
     filter: {field: 'isHome', value: false}
     create: true
@@ -121,4 +122,22 @@ collections:
         editor_components: ['image']
         modes: ['rich_text']
         required: false
-
+  - name: 'config'
+    label: 'Config'
+    files:
+      - name: 'tree'
+        label: 'Family Tree Config'
+        file: 'data/tree.yml'
+        publish: false
+        editor:
+          preview: false
+        fields:
+          - name: 'init'
+            label: 'Starting Person'
+            widget: 'relation'
+            collection: 'people'
+            search_fields: ['title']
+            value_field: '{{slug}}'
+            display_fields: ['title']
+            multiple: false
+            required: true

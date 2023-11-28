@@ -96,7 +96,7 @@ $page.Params.father "") "ux" (default $page.Params.wife "") "vir" (default $page
 <div class="tree-container">
   <p>Click on a person to find out more information about them.</p>
 
-  <div id="myDiagramDiv" data-pages='{{ $json | jsonify }}'>
+  <div id="myDiagramDiv" data-pages='{{ $json | jsonify }}' data-init='{{ .Site.Data.tree.init }}'>
     <canvas tabindex="0" style="z-index: 2; user-select: none; touch-action: none; cursor: auto;"></canvas>
   </div>
 </div>
