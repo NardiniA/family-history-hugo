@@ -125,9 +125,9 @@ collections:
   - name: 'config'
     label: 'Config'
     files:
-      - name: 'tree'
-        label: 'Family Tree Config'
-        file: 'data/tree.yml'
+      - name: 'config'
+        label: 'Configuration'
+        file: 'data/config.yml'
         publish: false
         editor:
           preview: false
@@ -141,3 +141,9 @@ collections:
             display_fields: ['title']
             multiple: false
             required: true
+          - name: 'logo'
+            label: 'Logo'
+            widget: 'image'
+            choose_url: false
+            default: '/images/logo.png'
+            allow_multiple: false
